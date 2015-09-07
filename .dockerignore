@@ -1,0 +1,4 @@
+.git/*
+.vagrant/*
+tmp/*
+public/bin/*

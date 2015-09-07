@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+cd /vagrant
+
+# Pull Dynamodb
+docker pull deangiberson/aws-dynamodb-local
+
+# Build main web project
+docker build --tag=aws-ecs-clockwork /aws-ecs-clockwork

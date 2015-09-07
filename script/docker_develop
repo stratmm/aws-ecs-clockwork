@@ -1,0 +1,26 @@
+#!/bin/bash
+if [ "$#" == 0 ]
+then
+docker rm aws-ecs-clockwork
+  docker run --name=aws-ecs-clockwork --publish=3000:3000 --link=aws-dynamodb-local:aws-dynamodb-local --volume=/aws-ecs-clockwork:/aws-ecs-clockwork --tty=false --interactive=false --detach=true aws-ecs-clockwork
+
+elif [ "$1" == 'console' ]
+then
+  docker run --link=aws-dynamodb-local:aws-dynamodb-local --volume=/aws-ecs-clockwork:/aws-ecs-clockwork --tty=true --interactive=true --detach=false --rm=true aws-ecs-clockwork "bundle exec rails c"
+
+elif [ "$1" == 'rspec' ]
+then
+  docker run --link=aws-dynamodb-local:aws-dynamodb-local --volume=/aws-ecs-clockwork:/aws-ecs-clockwork --tty=true --interactive=true --detach=false --rm=true aws-ecs-clockwork "bundle exec rspec $2 $3 $4 $5 $6 $7 $8 $9"
+
+elif [ "$1" == 'bash' ]
+then
+  docker run --link=aws-dynamodb-local:aws-dynamodb-local --volume=/aws-ecs-clockwork:/aws-ecs-clockwork --tty=true --interactive=true --detach=false --rm=true aws-ecs-clockwork "/bin/bash"
+
+elif [ "$1" == 'zeus' ]
+then
+  docker run --link=aws-dynamodb-local:aws-dynamodb-local --volume=/aws-ecs-clockwork:/aws-ecs-clockwork --tty=true --interactive=true --detach=false --rm=true aws-ecs-clockwork "zeus start"
+
+else
+  echo "running freeform"
+  docker run --name=aws-ecs-clockwork-run --publish=3000:3000 --link=aws-dynamodb-local:aws-dynamodb-local --volume=/aws-ecs-clockwork:/aws-ecs-clockwork --tty=true --interactive=true --detach=false --rm=true aws-ecs-clockwork "$1 $2 $3 $4 $5 $6 $7 $8 $9"
+fi

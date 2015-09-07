@@ -1,0 +1,26 @@
+#!/bin/bash
+cd /vagrant
+
+# Install RVM
+gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3
+curl -L get.rvm.io | bash -s stable
+source ~/.profile
+/bin/bash -l -c "rvm get stable --auto-dotfiles"
+/bin/bash -l -c "rvm install 2.1.2"
+/bin/bash -l -c "rvm alias create default 2.1.2"
+
+# Install NVM
+/bin/bash -l -c "curl https://raw.githubusercontent.com/creationix/nvm/v0.17.3/install.sh | bash"
+/bin/bash -l -c "echo 'source ~/.nvm/nvm.sh' >> ~/.profile"
+/bin/bash -l -c "nvm install v0.10.32"
+/bin/bash -l -c "nvm alias default v0.10.32"
+
+# Add rails project dependencies
+sudo apt-get install -y mysql-client-5.5
+sudo apt-get install -y libmysqlclient-dev
+sudo apt-get install -y libnotify-dev imagemagick
+sudo apt-get install -y build-essential
+
+# Build the Elevate app
+cd /elevate/elevate-new-app
+/bin/bash -l -c "bundle install"

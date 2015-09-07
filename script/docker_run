@@ -1,0 +1,9 @@
+#!/bin/bash
+cd /vagrant
+echo Starting required service containers
+
+# Start Postgres
+docker run --name=aws-dynamodb-local --detach=true  --publish=8000:8000 deangiberson/aws-dynamodb-local
+read -t5 -n1 -r -p "Waiting for aws-dynamodb-local to start..." key
+
+echo "All services started"
