@@ -1,0 +1,18 @@
+{
+  "RequestType": "Delete",
+  "RequestId": "123456",
+  "ResponseURL": "pre-signed-url-for-create-response",
+  "ResourceType": "Custom::ScheduleTask",
+  "LogicalResourceId": "123456",
+  "PhysicalResourceId": "f8ed7ddb-58f7-4f27-ba55-6a6d516024d0",
+  "StackId": "arn:aws:cloudformation:us-east-1:namespace:stack/stack-name/guid",
+  "ResourceProperties": {
+    "SchedulerDynamoDBTable" : "TestSchedulerDynamoDBTable",
+    "Region" : "eu-west-1",
+    "Name" : "Foobarbar",
+    "StartTime" : "2015-09-07T14:22:48",
+    "EndTime" : "2015-09-07T14:22:48",
+    "Recurrence" : "*",
+    "TaskDefinitionArn" : "TaskDefinitionArn"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "RequestType": "Create",
+  "RequestId": "123456",
+  "ResponseURL": "pre-signed-url-for-create-response",
+  "ResourceType": "Custom::ScheduleTask",
+  "LogicalResourceId": "123456",
+  "StackId": "arn:aws:cloudformation:us-east-1:namespace:stack/stack-name/guid",
+  "ResourceProperties": {
+    "SchedulerDynamoDBTable" : "TestSchedulerDynamoDBTable",
+    "Region" : "eu-west-1",
+    "Name" : "Foobar",
+    "StartTime" : "2015-09-07T14:22:48",
+    "EndTime" : "2015-09-07T14:22:48",
+    "Recurrence" : "*",
+    "TaskDefinitionArn" : "TaskDefinitionArn"
+  }
+}

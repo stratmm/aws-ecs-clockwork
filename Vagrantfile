@@ -17,7 +17,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine.
   # [9000].each do |p|
-  [5050].each do |p|
+  [5050, 8000].each do |p|
     config.vm.network :forwarded_port, guest: p, host: p
   end
 
