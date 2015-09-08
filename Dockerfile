@@ -57,6 +57,9 @@ RUN sudo apt-get autoremove -y
 ADD . /aws-ecs-clockwork
 RUN sudo chown -R nuser:nuser .
 
+WORKDIR /aws-ecs-clockwork/worker
+RUN /bin/bash -l -c "npm install"
+WORKDIR /aws-ecs-clockwork
 
 VOLUME ["/aws-ecs-clockwork"]
 

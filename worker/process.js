@@ -108,6 +108,6 @@ setInterval(function() {
   console.log('Checking for Job Changes');
   setUpJobs();
   console.log(jobs);
-}, 10000);
+}, 60000);
 
 console.log("Exit");
