@@ -1,0 +1,16 @@
+{
+  "RequestType": "Create",
+  "RequestId": "123456",
+  "ResponseURL": "pre-signed-url-for-create-response",
+  "ResourceType": "Custom::ScheduleTask",
+  "LogicalResourceId": "123456",
+  "StackId": "arn:aws:cloudformation:us-east-1:namespace:stack/stack-name/guid",
+  "ResourceProperties": {
+    "SchedulerDynamoDBTable" : "TestSchedulerDynamoDBTable",
+    "Region" : "eu-west-1",
+    "Name" : "Do Accruals Processing",
+    "CronTime" : "*/2 * * * *",
+    "TaskDefinitionArn" : "arn:aws:ecs:eu-west-1:481940266272:task-definition/ecs-s-DoAcc-1BSHDW47UFT5V:1",
+    "ECSClusterArn" : "ecs-c-ECSCl-1JPVHM2Y1UOGK"
+  }
+}

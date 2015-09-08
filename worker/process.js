@@ -6,6 +6,9 @@ var schedule = require('node-schedule');
 var Moment = require('moment');
 
 var dynamo = new aws.DynamoDB({ region: process.env.AWS_REGION });
+var ecs = new aws.ECS({
+  region: process.env.AWS_REGION
+});
 
 var jobs = {};
 
@@ -35,34 +38,67 @@ var getAllDBJobs = function(fn) {
   });
 };
 
+var executeJob = function(db_job) {
+  console.log('Running Task:', db_job.id);
+  var params = {
+    taskDefinition: db_job.definition_arn, /* required */
+    cluster: db_job.ecs_cluster_arn,
+    count: 1,
+    startedBy: 'ecs-aws-clockwork'
+  };
+  ecs.runTask(params, function(err, data) {
+    console.log('err, data');
+    console.log(err, data);
+    if (err) console.log(err, err.stack); // an error occurred
+    else     console.log(data);           // successful response
+  });
+};
+
 var setUpJobs = function() {
   getAllDBJobs(function(err, db_jobs){
     if (db_jobs.length > 0 ) {
+      // deal with any new or updated jobs
       _.each(db_jobs, function(db_job, index, db_jobs){
         var job = jobs[db_job.id];
         if (!_.isUndefined(job)) {
           if (start_time.isBefore(Moment(db_job.last_updated))) {
-            console.log('removing job for update');
             job.cancel();
             job = schedule.scheduleJob(db_job.cron_time, function(){
-                   console.log("Running:", db_job.id);
+                   executeJob(db_job);
             });
             jobs[db_job.id] = job;
           }
         } else {
-          console.log('scheduling job');
           job = schedule.scheduleJob(db_job.cron_time, function(){
-                 console.log("Running:", db_job.id);
+                 executeJob(db_job);
           });
           jobs[db_job.id] = job;
         }
       });
     }
+
+    // Now deal with any jobs that have been deleted
+    _.each(_.keys(jobs), function(job_key, index, job_keys){
+      var found_job = _.find(db_jobs, function(db_job){
+        if (db_job.id === job_key) {
+          return true;
+        } else {
+          return false;
+        }
+      }, this);
+      if (_.isUndefined(found_job)) {
+        console.log('Cancelling Deleted Job:', job_key);
+        jobs[job_key].cancel();
+        delete jobs[job_key];
+      }
+    }, this);
+
   });
 };
 
+
+
 setUpJobs();
-console.log(jobs);
 
 // Set the start time to no for job updates
 start_time = Moment();
@@ -72,6 +108,6 @@ setInterval(function() {
   console.log('Checking for Job Changes');
   setUpJobs();
   console.log(jobs);
-}, 30000);
+}, 10000);
 
 console.log("Exit");
