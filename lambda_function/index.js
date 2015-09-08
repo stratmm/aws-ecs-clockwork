@@ -69,6 +69,7 @@ exports.handler = function(event, context) {
   var onError = function(err, data) {
     var resp = { Error: err };
     console.log(resp.Error + ':\\n', err);
+    console.log(data);
     response.send(event, context, response.FAILED, resp);
   };
 
@@ -79,17 +80,26 @@ exports.handler = function(event, context) {
   switch(event.RequestType) {
     case 'Create':
       // just create tasks...
-      create_record(defs, function(err, data) {
-        if (err) onError('Create call failed', data);
-        else response.send(event, context, response.SUCCESS, {}, defs.Id);
-      });
+      if (is_cron_valid(defs.CronTime)) {
+        create_record(defs, function(err, data) {
+          if (err) onError('Create call failed', data);
+          else response.send(event, context, response.SUCCESS, {}, defs.Id);
+        });
+      } else {
+        response.send(event, context, response.FAILED, {}, defs.Id);
+      }
+
       break;
     case 'Update':
-      // first delete, then update the tasks
-      update_record(defs, function(err, data) {
-        if (err) onError('Update call failed', data);
-        else response.send(event, context, response.SUCCESS, {}, defs.Id);
-      });
+      if (is_cron_valid(defs.CronTime)) {
+        // first delete, then update the tasks
+        update_record(defs, function(err, data) {
+          if (err) onError('Update call failed', data);
+          else response.send(event, context, response.SUCCESS, {}, defs.Id);
+        });
+      } else {
+        response.send(event, context, response.FAILED, {}, defs.Id);
+      }
       break;
     case 'Delete':
       // delete the tasks
@@ -99,6 +109,19 @@ exports.handler = function(event, context) {
       });
       break;
   }
+};
+
+var is_cron_valid = function(cron_time) {
+    var parser = require('cron-parser');
+  try {
+    var interval = parser.parseExpression(cron_time);
+
+    return true;
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+
 };
 
 var key = function(properties) {
@@ -112,10 +135,10 @@ var key = function(properties) {
 var item = function(properties) {
   return {
     id: { S: properties.Id },
-    start_time: { S: properties.StartTime },
-    end_time: { S: properties.EndTime },
-    recurrence: { S: properties.Recurrence },
+    cron_time: { S: properties.CronTime },
     name: { S: properties.Name },
-    definition_arn: { S: properties.TaskDefinitionArn }
+    definition_arn: { S: properties.TaskDefinitionArn },
+    ecs_cluster_arn: { S: properties.ECSClusterArn },
+    last_updated: { S: new Date().toISOString() }
   };
 };

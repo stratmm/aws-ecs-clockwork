@@ -4,15 +4,14 @@
   "ResponseURL": "pre-signed-url-for-create-response",
   "ResourceType": "Custom::ScheduleTask",
   "LogicalResourceId": "123456",
-  "PhysicalResourceId": "9272f0bd-47fe-46bb-9a1f-b28ec09b6d5f",
+  "PhysicalResourceId": "27d7b677-2571-4f32-9669-5f9b3378d76c",
   "StackId": "arn:aws:cloudformation:us-east-1:namespace:stack/stack-name/guid",
   "ResourceProperties": {
     "SchedulerDynamoDBTable" : "TestSchedulerDynamoDBTable",
     "Region" : "eu-west-1",
-    "Name" : "Foobarbar",
-    "StartTime" : "2015-09-07T14:22:48",
-    "EndTime" : "2015-09-07T14:22:48",
-    "Recurrence" : "*",
-    "TaskDefinitionArn" : "TaskDefinitionArn"
+    "Name" : "Foobar",
+    "CronTime" : "*/3 * * * *",
+    "TaskDefinitionArn" : "TaskDefinitionArn",
+    "ECSClusterArn" : "ECSClusterArn"
   }
 }

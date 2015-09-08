@@ -9,9 +9,8 @@
     "SchedulerDynamoDBTable" : "TestSchedulerDynamoDBTable",
     "Region" : "eu-west-1",
     "Name" : "Foobar",
-    "StartTime" : "2015-09-07T14:22:48",
-    "EndTime" : "2015-09-07T14:22:48",
-    "Recurrence" : "*",
-    "TaskDefinitionArn" : "TaskDefinitionArn"
+    "CronTime" : "*/2 * * * *",
+    "TaskDefinitionArn" : "TaskDefinitionArn",
+    "ECSClusterArn" : "ECSClusterArn"
   }
 }

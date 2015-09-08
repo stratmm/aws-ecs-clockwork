@@ -5,13 +5,13 @@
   "private": "true",
   "dependencies": {
     "aws-sdk": "^2.1.40",
-    "cron-parser": "^0.7.1",
-    "node-uuid": "^1.4.3"
+    "moment": "^2.10.6",
+    "node-schedule": "^0.2.9",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "grunt": "0.4.*",
     "grunt-pack": "0.1.*",
-    "grunt-aws-lambda": "0.7.*",
     "npm": "^2.2.0"
   },
   "bundledDependencies": []
