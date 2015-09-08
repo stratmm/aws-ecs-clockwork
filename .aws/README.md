@@ -2,6 +2,8 @@
 
 This template creates a Lambda function with sufficient IAM permissions so that its adds entries to a DynamoDB Scheduler Table. The Cloudformation itself provides a number of outputs, to make it possible to build & schedule recurring tasks within other Cloudformations.
 
+It also launches a Service to process the scheduled tasks and respond to Cloudformation stack changes
+
 ### Dependencies
 
 | Stack                | Description                              |
